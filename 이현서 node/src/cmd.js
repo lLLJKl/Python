@@ -4,12 +4,15 @@ const getData = () => {
     const f = fs.readFileSync('./data/memo.json', 'utf-8')
     return JSON.parse(f)
 }
+const writeData = (data) => {
+    fs.writeFileSync('./data/memo.json', JSON.stringify(data), 'utf-8')
+}
 
 export const submit = (word) => {
     const data =  getData();   
-    data.list.push({id: Date.now(), name: word, completed: false})
+    data.list.push({id: Date.now(), name: word})
     console.log(data);
-    fs.writeFileSync('./data/memo.json', JSON.stringify(data), 'utf-8')
+    writeData(data);
 }
 
 export const list = () => {
@@ -21,7 +24,7 @@ export const list = () => {
 export const Ddelete = (name) => {
     const data = getData()
     data.list = data.list.filter(v => v.name !== name)    
-    fs.writeFileSync('./data/memo.json', JSON.stringify(data), 'utf-8')
+    writeData(data);
     console.log(data)
 }
 
@@ -30,7 +33,6 @@ export const update = (targetName, newName) => {
   const target = data.list.find(v => v.name === targetName);
   if (!target) {console.log("단어 없음"); return; }
    if (newName) target.name = newName;
-
-  fs.writeFileSync('./data/memo.json', JSON.stringify(data), 'utf-8')
+  writeData(data);
   console.log(data);
 };
